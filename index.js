@@ -1,6 +1,7 @@
 (function(namespace) {
 
     var http = require('http'),
+        https = require('https'),
         querystring = require('querystring'),
         request = require('request'),
         fs = require('fs'),
@@ -20,8 +21,9 @@
         // Get the image data from an HTTP request
         decodeUrl: function(captchaURL, loopDelay, callback) {
             var url = URL.parse(captchaURL);
-
-            http.get({
+            var protocol = http;
+            if(url.indexOf('https://') == 0) protocol = https;
+            protocol.get({
                 host: url.host,
                 port: url.port,
                 path: url.path
